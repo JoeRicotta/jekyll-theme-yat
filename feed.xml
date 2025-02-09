@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://joericotta.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://joericotta.github.io/" rel="alternate" type="text/html" /><updated>2025-02-09T21:02:31+00:00</updated><id>https://joericotta.github.io/feed.xml</id><title type="html">Joe Ricotta DPT, PhD</title><subtitle></subtitle><author><name>Joe Ricotta</name></author><entry><title type="html">brainreg3D at the Penn State Center for Neural Engineering</title><link href="https://joericotta.github.io/registration/python/2024/08/19/brainreg3D-cne.html" rel="alternate" type="text/html" title="brainreg3D at the Penn State Center for Neural Engineering" /><published>2024-08-19T00:00:00+00:00</published><updated>2024-08-19T00:00:00+00:00</updated><id>https://joericotta.github.io/registration/python/2024/08/19/brainreg3D-cne</id><content type="html" xml:base="https://joericotta.github.io/registration/python/2024/08/19/brainreg3D-cne.html"><![CDATA[<p>I presented <a href="https://github.com/JoeRicotta/brainreg3D/blob/master/description.md">brainreg3D</a> as a poster at the annual Penn State Center for Neural Engineering Retreat.</p>
+
+<p><img src="https://joericotta.github.io/assets/pdf/Ricotta_CNE_retreat_2024.pdf" alt="CNE Poster" /></p>
+
+<p>You can download the poster <a href="https://joericotta.github.io/assets/pdf/Ricotta_CNE_retreat_2024.pdf">here</a>.</p>]]></content><author><name>Joe</name></author><category term="registration" /><category term="python" /><summary type="html"><![CDATA[I presented brainreg3D as a poster at the annual Penn State Center for Neural Engineering Retreat.]]></summary></entry><entry><title type="html">brainreg3D, a pipeline for manual pixelwise registration of brain regions</title><link href="https://joericotta.github.io/registration/2024/05/11/brainreg3D.html" rel="alternate" type="text/html" title="brainreg3D, a pipeline for manual pixelwise registration of brain regions" /><published>2024-05-11T00:00:00+00:00</published><updated>2024-05-11T00:00:00+00:00</updated><id>https://joericotta.github.io/registration/2024/05/11/brainreg3D</id><content type="html" xml:base="https://joericotta.github.io/registration/2024/05/11/brainreg3D.html"><![CDATA[<p>I coded a personal pipeline for pixelwise registration of brain regions and decided to package it for broader use. Based off of the vedo and brainrender frameworks, I’ve finished the first tentative version of brainreg3D. This is a python package for the manual registration of 2D images over a 3D brain. Below is the description as found at <a href="https://github.com/JoeRicotta/brainreg3D/blob/master/description.md">https://github.com/JoeRicotta/brainreg3D/blob/master/description.md</a>.</p>
+
+<p>brainreg3D is based off of the <a href="https://vedo.embl.es">vedo</a> and <a href="https://brainglobe.info/documentation/brainrender/index.html">brainrender</a> framework to allow registration of a 2D image onto a 3D brain. It uses perspectival projections of the brain onto the field of view to map cortical regions to image pixels.</p>
+
+<p>The following images were obtained with the below code:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">brainreg3D</span> <span class="kn">import</span> <span class="n">BrainReg3D</span>
+
+<span class="c1"># by specifying the image_dims_mm parameter, we ensure the loaded image
+# is to scale
+</span><span class="n">reg</span> <span class="o">=</span> <span class="nc">BrainReg3D</span><span class="p">(</span><span class="sh">'</span><span class="s">./resources/sample_image.tif</span><span class="sh">'</span><span class="p">,</span> <span class="n">image_dims_mm</span><span class="o">=</span><span class="p">[</span><span class="mf">6.25</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+
+<span class="c1"># if verbose, intermediate processing steps will be plotted and shown
+</span><span class="n">reg</span><span class="p">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c1"># run the pipeline
+</span><span class="n">reg</span><span class="p">.</span><span class="nf">run</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>The first step is to manually align the image over the Allen atlas.</p>
+
+<p><img src="https://github.com/JoeRicotta/brainreg3D/raw/master/resources/_images/reg_image.png" alt="Registration image" /></p>
+
+<p>After hitting enter, an image with the perspectival projections of the underlying brain regions will appear. These brain regions can be identified (and modified) within the class parameter <code class="language-plaintext highlighter-rouge">BrainReg3D._DEFAULT_BRAIN_REGIONS</code>.</p>
+
+<p><img src="https://github.com/JoeRicotta/brainreg3D/raw/master/resources/_images/proj_image.png" alt="Projection image" /></p>
+
+<p>The underlying volumes of these specified regions are then plotted:</p>
+
+<p><img src="https://github.com/JoeRicotta/brainreg3D/raw/master/resources/_images/projected_volume.png" alt="Regional volume" /></p>
+
+<p>The 2D projections of these regions are shown, without regard for their depth in the brain.</p>
+
+<p><img src="https://github.com/JoeRicotta/brainreg3D/raw/master/resources/_images/perspectival_projections.png" alt="Unresolved projections" /></p>
+
+<p>Superficial structures mask deep structures. To account for this, the image space is quantized and projections are preserved based on the length of these projections:</p>
+
+<p><img src="https://github.com/JoeRicotta/brainreg3D/raw/master/resources/_images/quantized_projections.png" alt="Quantized projections" />
+<img src="https://github.com/JoeRicotta/brainreg3D/raw/master/resources/_images/depth_resolved.png" alt="Resolved projections" /></p>
+
+<p>A k-nearest neigbors algorithm is then used to label each pixel identity based on the identity of it’s neigbors:</p>
+
+<p><img src="https://github.com/JoeRicotta/brainreg3D/raw/master/resources/_images/pixel_labels.png" alt="Labeled pixels" /></p>
+
+<p>Finally, the pixel labels are converted to masks (images of 0 and 1 values) and saved in the image directory.</p>
+
+<p><img src="https://github.com/JoeRicotta/brainreg3D/raw/master/resources/_images/pixel_masks.png" alt="Image masks" /></p>]]></content><author><name>Joe</name></author><category term="registration" /><summary type="html"><![CDATA[I coded a personal pipeline for pixelwise registration of brain regions and decided to package it for broader use. Based off of the vedo and brainrender frameworks, I’ve finished the first tentative version of brainreg3D. This is a python package for the manual registration of 2D images over a 3D brain. Below is the description as found at https://github.com/JoeRicotta/brainreg3D/blob/master/description.md.]]></summary></entry><entry><title type="html">Acoustic Plethysmography</title><link href="https://joericotta.github.io/breathing/2024/05/01/brett-westgate.html" rel="alternate" type="text/html" title="Acoustic Plethysmography" /><published>2024-05-01T00:00:00+00:00</published><updated>2024-05-01T00:00:00+00:00</updated><id>https://joericotta.github.io/breathing/2024/05/01/brett-westgate</id><content type="html" xml:base="https://joericotta.github.io/breathing/2024/05/01/brett-westgate.html"><![CDATA[<p>We’ve been interested in respiration in the lab for some time now, and are looking for a more accurate measure of respiration than thermocouples can allow for. Further, we need it to be compatible with our two-photon microscope setup, which is challenging. Over the past year, undergrad Brett Westgate set out to design and build an acoustic plethysmograph to do exactly that. The plethysmograph was based on an original design done in the 00s by <a href="https://www.ncbi.nlm.nih.gov/pubmed/16897419">Reynolds and Frazer</a> out of West Virginia.</p>
+
+<p>Brett has completed prototyping, and is on the job market! <a href="https://brettwestgate.wixsite.com/westgateprojects/portfolio">Check out our work on his website.</a></p>]]></content><author><name>Joe</name></author><category term="breathing" /><summary type="html"><![CDATA[We’ve been interested in respiration in the lab for some time now, and are looking for a more accurate measure of respiration than thermocouples can allow for. Further, we need it to be compatible with our two-photon microscope setup, which is challenging. Over the past year, undergrad Brett Westgate set out to design and build an acoustic plethysmograph to do exactly that. The plethysmograph was based on an original design done in the 00s by Reynolds and Frazer out of West Virginia.]]></summary></entry></feed>
