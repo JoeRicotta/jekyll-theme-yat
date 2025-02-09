@@ -14,7 +14,7 @@ sidebar: []
 
 I presented [brainreg3D](https://github.com/JoeRicotta/brainreg3D/blob/master/description.md) as a poster at the annual Penn State Center for Neural Engineering Retreat.
 
-![CNE Poster](assets/images/Ricotta_CNE_retreat_2024.jpg)
+![CNE Poster](https://joericotta.github.io/assets/pdf/Ricotta_CNE_retreat_2024.pdf)
 
-You can download the poster [here] (assets/pdf/Ricotta_CNE_retreat_2024.pdf).
+You can download the poster [here](https://joericotta.github.io/assets/pdf/Ricotta_CNE_retreat_2024.pdf).
 
